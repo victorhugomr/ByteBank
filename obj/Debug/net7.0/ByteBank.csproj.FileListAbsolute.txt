@@ -1,0 +1,15 @@
+C:\Users\Victor Hugo\Desktop\ByteBank\bin\Debug\net7.0\ByteBank.exe
+C:\Users\Victor Hugo\Desktop\ByteBank\bin\Debug\net7.0\ByteBank.deps.json
+C:\Users\Victor Hugo\Desktop\ByteBank\bin\Debug\net7.0\ByteBank.runtimeconfig.json
+C:\Users\Victor Hugo\Desktop\ByteBank\bin\Debug\net7.0\ByteBank.dll
+C:\Users\Victor Hugo\Desktop\ByteBank\bin\Debug\net7.0\ByteBank.pdb
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.csproj.AssemblyReference.cache
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.AssemblyInfoInputs.cache
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.AssemblyInfo.cs
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.csproj.CoreCompileInputs.cache
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.dll
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\refint\ByteBank.dll
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.pdb
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ByteBank.genruntimeconfig.cache
+C:\Users\Victor Hugo\Desktop\ByteBank\obj\Debug\net7.0\ref\ByteBank.dll
