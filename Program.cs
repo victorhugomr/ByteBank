@@ -1,17 +1,20 @@
-﻿namespace ByteBank{
+﻿using System;
+using System.Collections.Generic;
+
+namespace ByteBank{
 
     public class Program{
 
-		public class Account{
+		public class Accounts{
+			public double? Balance { get; set; }
+			public string? Account { get; set; }
+			public string? Agency { get; set; }
 			public string? Name { get; set; }
 			public string? CPF { get; set; }
-			public double? Balance { get; set; }
 		}
 
-		public static int Menu(){
+		public static int Menu(List<Accounts> listOfAccounts){
 			//Menu principal.
-			List<Account> listOfAccounts = new List<Account>();
-
 			Console.Clear();
 			Console.WriteLine("Escolha uma opção: ");
 			Console.WriteLine("1. Inserir novo usuário");
@@ -55,7 +58,7 @@
 				}
 
 			return option;
-   	}
+   		}
 
 		public static int MenuTransactions(){
 			//Menu de transações.
@@ -86,11 +89,15 @@
 				}
 			
 			return option;
-   	}
+   		}
 
-		public static void InsertUser(List<Account> listOfAccounts){
+		public static void InsertUser(List<Accounts> listOfAccounts){
 			//Inserir novo usuário.
-			Account account = new Account();
+			Accounts account = new Accounts();
+
+			account.Balance = 0;
+			account.Account = "gerar string aleatória";
+			account.Agency = "123";
 
 			Console.Clear();
 			Console.WriteLine("Para inserir um novo usuário, digite o nome do usuário: ");
@@ -99,32 +106,35 @@
 			Console.Clear();
 			Console.WriteLine("Digite o CPF do usuário: ");
 			account.CPF = Console.ReadLine();
-			account.Balance = 0;
-   	}
+
+			listOfAccounts.Add(account);
+   		}
 
 		public static void DeleteUser(){
 			//Deletar um usuário.
 			Console.Clear();
-   	}
+   		}
 
-		public static void ListAccounts(List<Account> listOfAccounts){
+		public static void ListAccounts(List<Accounts> listOfAccounts){
 			//Listar todas as contas registradas.
 			Console.Clear();
-			foreach(Account account in listOfAccounts){
-				Console.WriteLine(account.Name);
+			foreach(Accounts item in listOfAccounts){
+				Console.WriteLine(item.Account);
 			}
+			
+			Console.WriteLine("Pressione ENTER para continuar. ");
 			Console.ReadLine();
-   	}
+   		}
 
 		public static void AccountDetails(){
 			//Detalhes de um usuário.
 			Console.Clear();
-   	}
+   		}
 
 		public static void ShowBalance(){
 			//Total armazenado no banco.
 			Console.Clear();
-   	}
+   		}
 
 		public static void Transactions(){
 			//Manipular conta.
@@ -136,35 +146,36 @@
 				optionTransactions = MenuTransactions();
 
 			}while(optionTransactions != 4);
-   	}
+   		}
 
 		public static void Deposit(){
 			//Depositar valor na conta.
 			Console.Clear();
-   	}
+   		}
 
 		public static void Withdraw(){
 			//Sacar valor da conta.
 			Console.Clear();
-   	}
+   		}
 
 		public static void Transfer(){
 			//Transferir valor para outra conta.
 			Console.Clear();
-   	}
+   		}
 
 		public static void Exit(){
 			//Sair do programa.
 			Console.Clear();
-   	}
+   		}
 
     	public static void Main(){
+			List<Accounts> listOfAccounts = new List<Accounts>();
 			int option = 0;
 
 			do{
-				option = Menu();
+				option = Menu(listOfAccounts);
 
 			}while(option != 0);
-   	}
+   		}
 	}
 }
