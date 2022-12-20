@@ -13,6 +13,57 @@ namespace ByteBank{
 			public string? CPF { get; set; }
 		}
 
+		private static Random random = new Random();
+
+		public static string RandomString(int length){
+			const string chars = "0123456789";
+			return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+		}
+		
+		public static int GetIndex(List<Accounts> listOfAccounts, string? CPF){
+			//Busca o index da lista de contas.
+			return listOfAccounts.FindIndex(a => a.CPF == CPF);
+   		}
+		
+		public static string? GetCPF(){
+			//Lê um CPF válido.
+			string? CPF = Console.ReadLine();
+
+			if(CPF is not null){
+				if(CPF.Length == 11){
+					return CPF;
+				}
+				else{
+					Console.Clear();
+					Console.WriteLine("CPF inválido. Insira novamente o CPF desejado. ");
+					return GetCPF();
+				}
+			}
+			else{
+				return GetCPF();
+			}
+   		}
+
+		public static bool AccountExists(List<Accounts> listOfAccounts, string account){
+			//Checa se o número da conta existe.
+			foreach(Accounts item in listOfAccounts){
+				if(account == item.Account){
+					return true;
+				}
+			}
+			return false;
+   		}
+
+		public static bool CPFExists(List<Accounts> listOfAccounts, string? CPF){
+			//Checa se o CPF existe.
+			foreach(Accounts item in listOfAccounts){
+				if(CPF == item.CPF){
+					return true;
+				}
+			}
+			return false;
+   		}
+
 		public static int Menu(List<Accounts> listOfAccounts){
 			//Menu principal.
 			Console.Clear();
@@ -26,14 +77,14 @@ namespace ByteBank{
 			Console.WriteLine("0. Sair");
 
 			int option = int.Parse(Console.ReadLine());
-
+			
 			switch(option){
 					case 1:
 						InsertUser(listOfAccounts);
 						break;
 
 					case 2:
-						DeleteUser();
+						DeleteUser(listOfAccounts);
 						break;
 
 					case 3:
@@ -41,15 +92,15 @@ namespace ByteBank{
 						break;
 
 					case 4:
-						AccountDetails();
+						AccountDetails(listOfAccounts);
 						break;
 
 					case 5:
-						ShowBalance();
+						ShowBalance(listOfAccounts);
 						break;
 
 					case 6:
-						Transactions();
+						Transactions(listOfAccounts);
 						break;
 
 					case 0:
@@ -60,7 +111,7 @@ namespace ByteBank{
 			return option;
    		}
 
-		public static int MenuTransactions(){
+		public static int MenuTransactions(List<Accounts> listOfAccounts){
 			//Menu de transações.
 			Console.Clear();
 			Console.WriteLine("Escolha uma opção: ");
@@ -73,15 +124,15 @@ namespace ByteBank{
 
 			switch(option){
 					case 1:
-						Deposit();
+						Deposit(listOfAccounts);
 						break;
 
 					case 2:
-						Withdraw();
+						Withdraw(listOfAccounts);
 						break;
 
 					case 3:
-						Transfer();
+						Transfer(listOfAccounts);
 						break;
 
 					default:
@@ -96,23 +147,38 @@ namespace ByteBank{
 			Accounts account = new Accounts();
 
 			account.Balance = 0;
-			account.Account = "gerar string aleatória";
-			account.Agency = "123";
+			account.Account = RandomString(8);
+			while(AccountExists(listOfAccounts, account.Account)){
+				account.Account = RandomString(8);
+			}
+			account.Agency = "001";
 
 			Console.Clear();
-			Console.WriteLine("Para inserir um novo usuário, digite o nome do usuário: ");
+			Console.WriteLine("Para inserir um novo usuário, digite o nome do usuário. ");
 			account.Name = Console.ReadLine();
 
 			Console.Clear();
-			Console.WriteLine("Digite o CPF do usuário: ");
-			account.CPF = Console.ReadLine();
+			Console.WriteLine("Digite o CPF do usuário. ");
+			account.CPF = GetCPF();
+			while(CPFExists(listOfAccounts, account.CPF)){
+				Console.Clear();
+				Console.WriteLine("CPF já existe. Digite um CPF válido. ");
+				account.CPF = GetCPF();
+			}
 
 			listOfAccounts.Add(account);
+			Console.Clear();
+			Console.WriteLine("Usuário inserido com sucesso. \n\nPressione ENTER para continuar. ");
+			Console.ReadLine();
    		}
 
-		public static void DeleteUser(){
+		public static void DeleteUser(List<Accounts> listOfAccounts){
 			//Deletar um usuário.
 			Console.Clear();
+			Console.WriteLine("Para deletar um usuário, digite o CPF do usuário. ");
+			string? CPF = GetCPF();
+			int index = GetIndex(listOfAccounts, CPF);
+			listOfAccounts.RemoveAt(index);
    		}
 
 		public static void ListAccounts(List<Accounts> listOfAccounts){
@@ -121,44 +187,96 @@ namespace ByteBank{
 			foreach(Accounts item in listOfAccounts){
 				Console.WriteLine(item.Account);
 			}
-			
-			Console.WriteLine("Pressione ENTER para continuar. ");
+			Console.WriteLine("\nPressione ENTER para continuar. ");
 			Console.ReadLine();
    		}
 
-		public static void AccountDetails(){
+		public static void AccountDetails(List<Accounts> listOfAccounts){
 			//Detalhes de um usuário.
 			Console.Clear();
-   		}
+			Console.WriteLine("Digite o CPF do usuário. ");
+			string? CPF = GetCPF();
+			int index = GetIndex(listOfAccounts, CPF);
 
-		public static void ShowBalance(){
-			//Total armazenado no banco.
 			Console.Clear();
+			Console.WriteLine("Nome: {0}", listOfAccounts[index].Name);
+			Console.WriteLine("CPF: {0}", listOfAccounts[index].CPF);
+			Console.WriteLine("Conta: {0}", listOfAccounts[index].Account);
+			Console.WriteLine("Agência: {0}", listOfAccounts[index].Agency);
+			Console.WriteLine("\nPressione ENTER para continuar. ");
+			Console.ReadLine();
    		}
 
-		public static void Transactions(){
+		public static void ShowBalance(List<Accounts> listOfAccounts){
+			//Total armazenado na conta.
+			Console.Clear();
+			Console.WriteLine("Digite o CPF do usuário. ");
+			string? CPF = GetCPF();
+			int index = GetIndex(listOfAccounts, CPF);
+			
+			Console.Clear();
+			Console.WriteLine("Saldo na conta: R${0:0.00}. \n\nPressione ENTER para continuar", listOfAccounts[index].Balance);
+			Console.ReadLine();
+   		}
+
+		public static void Transactions(List<Accounts> listOfAccounts){
 			//Manipular conta.
 			int optionTransactions = 4;
 
 			Console.Clear();
-			
 			do{
-				optionTransactions = MenuTransactions();
+				optionTransactions = MenuTransactions(listOfAccounts);
 
 			}while(optionTransactions != 4);
    		}
 
-		public static void Deposit(){
+		public static void Deposit(List<Accounts> listOfAccounts){
 			//Depositar valor na conta.
 			Console.Clear();
+			Console.WriteLine("Digite o CPF do usuário que deseja depositar. ");
+			string? CPF = GetCPF();
+			int index = GetIndex(listOfAccounts, CPF);
+
+			Console.Clear();
+			Console.WriteLine("Digite o valor que deseja depositar. ");
+			double value = double.Parse(Console.ReadLine());
+			if(value > 0){
+				listOfAccounts[index].Balance += value;
+				Console.Clear();
+				Console.WriteLine("Você depositou R${0:0.00}. \n\nPressione ENTER para continuar. ", value);
+				Console.ReadLine();
+			}
+			else{
+				Console.Clear();
+				Console.WriteLine("OPERAÇÃO NEGADA! O valor informado é um valor inválido. \n\nPressione ENTER para continuar. ");
+				Console.ReadLine();
+			}
    		}
 
-		public static void Withdraw(){
+		public static void Withdraw(List<Accounts> listOfAccounts){
 			//Sacar valor da conta.
 			Console.Clear();
+			Console.WriteLine("Digite o CPF do usuário que deseja sacar. ");
+			string? CPF = GetCPF();
+			int index = GetIndex(listOfAccounts, CPF);
+			
+			Console.Clear();
+			Console.WriteLine("Digite o valor que deseja sacar. ");
+			double value = double.Parse(Console.ReadLine());
+			if(listOfAccounts[index].Balance >= value){
+				listOfAccounts[index].Balance -= value;
+				Console.Clear();
+				Console.WriteLine("Você sacou R${0:0.00}. \n\nPressione ENTER para continuar. ", value);
+				Console.ReadLine();
+			}
+			else{
+				Console.Clear();
+				Console.WriteLine("OPERAÇÃO NEGADA! O valor informado é maior que o saldo em conta. \n\nPressione ENTER para continuar. ");
+				Console.ReadLine();
+			}
    		}
 
-		public static void Transfer(){
+		public static void Transfer(List<Accounts> listOfAccounts){
 			//Transferir valor para outra conta.
 			Console.Clear();
    		}
