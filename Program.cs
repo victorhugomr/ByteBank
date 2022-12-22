@@ -76,7 +76,10 @@ namespace ByteBank{
 			Console.WriteLine("6. Realizar uma transação");
 			Console.WriteLine("0. Sair");
 
-			int option = int.Parse(Console.ReadLine());
+			string? optionTmp = (Console.ReadLine());
+			int option = 0;
+			if(int.TryParse(optionTmp, out option)){
+			}
 			
 			switch(option){
 					case 1:
@@ -120,7 +123,10 @@ namespace ByteBank{
 			Console.WriteLine("3. Transferir");
 			Console.WriteLine("4. Voltar");
 
-			int option = int.Parse(Console.ReadLine());
+			string? optionTmp = (Console.ReadLine());
+			int option = 0;
+			if(int.TryParse(optionTmp, out option)){
+			}
 
 			switch(option){
 					case 1:
@@ -239,7 +245,11 @@ namespace ByteBank{
 
 			Console.Clear();
 			Console.WriteLine("Digite o valor que deseja depositar. ");
-			double value = double.Parse(Console.ReadLine());
+			string? valueTmp = (Console.ReadLine());
+			double value = 0;
+			if(Double.TryParse(valueTmp, out value)){
+			}
+
 			if(value > 0){
 				listOfAccounts[index].Balance += value;
 				Console.Clear();
@@ -262,7 +272,10 @@ namespace ByteBank{
 			
 			Console.Clear();
 			Console.WriteLine("Digite o valor que deseja sacar. ");
-			double value = double.Parse(Console.ReadLine());
+			string? valueTmp = (Console.ReadLine());
+			double value = 0;
+			if(Double.TryParse(valueTmp, out value)){
+			}
 			if(listOfAccounts[index].Balance >= value){
 				listOfAccounts[index].Balance -= value;
 				Console.Clear();
@@ -279,6 +292,34 @@ namespace ByteBank{
 		public static void Transfer(List<Accounts> listOfAccounts){
 			//Transferir valor para outra conta.
 			Console.Clear();
+			Console.WriteLine("Digite o seu CPF. ");
+			string? CPFFrom = GetCPF();
+			int indexFrom = GetIndex(listOfAccounts, CPFFrom);
+
+			Console.Clear();
+			Console.WriteLine("Digite o CPF do usuário para quem deseja transferir. ");
+			string? CPFTo = GetCPF();
+			int indexTo = GetIndex(listOfAccounts, CPFTo);
+			
+			Console.Clear();
+			Console.WriteLine("Digite o valor que deseja transferir. ");
+			string? valueTmp = (Console.ReadLine());
+			double value = 0;
+			if(Double.TryParse(valueTmp, out value)){
+			}
+
+			if(listOfAccounts[indexFrom].Balance >= value){
+				listOfAccounts[indexFrom].Balance -= value;
+				listOfAccounts[indexTo].Balance += value;
+				Console.Clear();
+				Console.WriteLine("Você transferiu R${0:0.00} para {1}. \n\nPressione ENTER para continuar. ", value, listOfAccounts[indexTo].Name);
+				Console.ReadLine();
+			}
+			else{
+				Console.Clear();
+				Console.WriteLine("OPERAÇÃO NEGADA! O valor informado é maior que o saldo em conta. \n\nPressione ENTER para continuar. ");
+				Console.ReadLine();
+			}
    		}
 
 		public static void Exit(){
